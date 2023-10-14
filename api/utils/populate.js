@@ -77,13 +77,14 @@ async function populate() {
 
     console.table(dataCounts);
 
-    // await populateColletion(Vendor, vendorData);
-    // await populateColletion(Product, productData);
-    // await populateColletion(Order, orderData);
+    await populateColletion(Vendor, vendorData);
+    await populateColletion(Product, productData);
+    await populateColletion(Order, orderData);
 
-    mongoose.disconnect();
+    console.log("Data populated successfully.");
   } catch (error) {
     console.error("Error: ", error);
+  } finally {
     mongoose.disconnect();
   }
 }

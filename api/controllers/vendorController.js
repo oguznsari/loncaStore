@@ -51,12 +51,20 @@ const getMonthlyProductDetails = async (req, res) => {
   // Get an array of product IDs
   const productIds = products.map((product) => product._id);
 
+  // Define the order status categories
+  const orderStatusCategories = [
+    "Confirmed",
+    "Received",
+    "Reviewed",
+    "Returned",
+  ];
+
   // Create a pipeline to aggregate the data
   const pipeline = [
     {
       $match: {
         "cart_item.product": { $in: productIds },
-        "cart_item.order_status": "Confirmed",
+        "cart_item.order_status": { $in: orderStatusCategories },
         payment_at: {
           $gte: new Date(`${year}-01-01`),
           $lt: new Date(`${year}-12-31`),
@@ -69,6 +77,7 @@ const getMonthlyProductDetails = async (req, res) => {
     {
       $group: {
         _id: {
+          order_status: "$cart_item.order_status",
           month: { $month: "$payment_at" },
           year: { $year: "$payment_at" },
         },
@@ -84,6 +93,8 @@ const getMonthlyProductDetails = async (req, res) => {
     },
     {
       $project: {
+        _id: 0,
+        order_status: "$_id.order_status",
         month: "$_id.month",
         year: "$_id.year",
         count: 1,
@@ -93,14 +104,31 @@ const getMonthlyProductDetails = async (req, res) => {
         totalPrice: 1,
         totalRevenue: { $subtract: ["$totalPrice", "$totalCOG"] },
         productsOrdered: 1,
-        _id: 0,
       },
     },
   ];
 
+  // Perform a lookup to retrieve product names based on product IDs
+  pipeline.push({
+    $lookup: {
+      from: "products", // Replace with the actual name of the product collection
+      localField: "productsOrdered",
+      foreignField: "_id",
+      as: "productDetails",
+    },
+  });
+
   const result = await Order.aggregate(pipeline);
 
-  res.status(StatusCodes.OK).json(result);
+  // Organize the results into an object with keys based on order_status
+  const categorizedResult = {};
+  orderStatusCategories.forEach((category) => {
+    categorizedResult[category] = result.filter(
+      (item) => item.order_status === category
+    );
+  });
+
+  res.status(StatusCodes.OK).json(categorizedResult);
 };
 
 module.exports = {
