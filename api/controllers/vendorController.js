@@ -79,6 +79,7 @@ const getMonthlyProductDetails = async (req, res) => {
         }, // Total individual orders
         totalCOG: { $sum: "$cart_item.cogs" }, // Total COG
         totalPrice: { $sum: "$cart_item.price" }, // Total price
+        productsOrdered: { $addToSet: "$cart_item.product" }, // Collect unique product IDs ordered in this month
       },
     },
     {
@@ -91,6 +92,7 @@ const getMonthlyProductDetails = async (req, res) => {
         totalCOG: 1,
         totalPrice: 1,
         totalRevenue: { $subtract: ["$totalPrice", "$totalCOG"] },
+        productsOrdered: 1,
         _id: 0,
       },
     },
