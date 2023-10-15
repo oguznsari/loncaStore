@@ -24,11 +24,11 @@ export default async function AllTimeSummary({
         const data = await response.json();
         return data;
       } else {
-        console.log("Error while fetching vendors.");
+        console.log("Error while fetching all time data.");
         return null;
       }
     } catch (error) {
-      console.log("Error while fetching vendors: " + error.message);
+      console.log("Error while fetching all time data: " + error.message);
       return null;
     }
   };
