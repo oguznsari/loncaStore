@@ -12,3 +12,14 @@
     node populate.js
 
 ```
+
+Useful insights from data (order table)
+
+```json
+{
+  "payment_at": {
+    "max": "2023-03-14T09:16:41.000+00:00",
+    "min": "2021-12-12T13:26:20.920+00:00"
+  }
+}
+```
