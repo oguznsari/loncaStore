@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 
 require("dotenv").config();
 
@@ -6,6 +7,15 @@ const app = express();
 
 // database
 const connectDB = require("./db/connect");
+
+const allowedOrigin = "http://localhost:3000";
+const corsOptions = {
+  origin: allowedOrigin,
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true, // If needed for handling cookies
+};
+
+app.use(cors(corsOptions));
 
 // routers
 const orderRouter = require("./routes/orderRoutes");
