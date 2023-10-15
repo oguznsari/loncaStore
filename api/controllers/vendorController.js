@@ -3,6 +3,16 @@ const Product = require("../models/Product");
 const Order = require("../models/Order");
 const { StatusCodes } = require("http-status-codes");
 
+const validOrderStatuses = [
+  "Confirmed",
+  "Received",
+  "Reviewed",
+  "Returned",
+  "StockIn",
+  "StockOut",
+  "Supplier Return",
+];
+
 const getVendors = async (req, res) => {
   const vendors = await Vendor.find({}).limit(200);
   res.status(StatusCodes.OK).json({ vendors, count: vendors.length });
@@ -13,7 +23,7 @@ const getVendorById = async (req, res) => {
 
   const vendor = await Vendor.findOne({ _id: vendorId });
   if (!vendor) {
-    res
+    return res
       .status(StatusCodes.NOT_FOUND)
       .json({ msg: `No vendor found with id ${vendorId}` });
   }
@@ -26,7 +36,7 @@ const getAllProductsByVendor = async (req, res) => {
 
   const vendor = await Vendor.findOne({ _id: vendorId });
   if (!vendor) {
-    res
+    return res
       .status(StatusCodes.NOT_FOUND)
       .json({ msg: `No vendor found with id ${vendorId}` });
   }
@@ -38,33 +48,36 @@ const getAllProductsByVendor = async (req, res) => {
 const getMonthlyProductDetails = async (req, res) => {
   const { year, id: vendorId } = req.params; // Assuming you get the year and vendorId from the request
 
+  let orderStatus = "Confirmed";
+  if (req.body.order_status) {
+    if (validOrderStatuses.includes(req.body.order_status)) {
+      orderStatus = req.body.order_status;
+    } else {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        msg: `Invalid order_status provided, please provide valid status: ${validOrderStatuses.join(
+          ", "
+        )}`,
+      });
+    }
+  }
+
   // First, find all products related to the vendor
   const products = await Product.find({ vendor: vendorId });
 
   if (!products || products.length === 0) {
-    res
+    return res
       .status(StatusCodes.NOT_FOUND)
       .json({ msg: `No products found for vendor with id ${vendorId}` });
-    return;
   }
 
   // Get an array of product IDs
   const productIds = products.map((product) => product._id);
-
-  // Define the order status categories
-  const orderStatusCategories = [
-    "Confirmed",
-    "Received",
-    "Reviewed",
-    "Returned",
-  ];
 
   // Create a pipeline to aggregate the data
   const pipeline = [
     {
       $match: {
         "cart_item.product": { $in: productIds },
-        "cart_item.order_status": { $in: orderStatusCategories },
         payment_at: {
           $gte: new Date(`${year}-01-01`),
           $lt: new Date(`${year}-12-31`),
@@ -75,13 +88,18 @@ const getMonthlyProductDetails = async (req, res) => {
       $unwind: "$cart_item",
     },
     {
+      $match: {
+        "cart_item.order_status": orderStatus, // Filter
+      },
+    },
+    {
       $group: {
         _id: {
           order_status: "$cart_item.order_status",
           month: { $month: "$payment_at" },
           year: { $year: "$payment_at" },
         },
-        count: { $sum: 1 }, // Count of orders
+        count: { $sum: 1 }, // Count
         totalPackQuantity: { $sum: "$cart_item.quantity" }, // Total quantity of products
         totalIndividualQuantity: {
           $sum: { $multiply: ["$cart_item.quantity", "$cart_item.item_count"] },
@@ -120,15 +138,7 @@ const getMonthlyProductDetails = async (req, res) => {
 
   const result = await Order.aggregate(pipeline);
 
-  // Organize the results into an object with keys based on order_status
-  const categorizedResult = {};
-  orderStatusCategories.forEach((category) => {
-    categorizedResult[category] = result.filter(
-      (item) => item.order_status === category
-    );
-  });
-
-  res.status(StatusCodes.OK).json(categorizedResult);
+  res.status(StatusCodes.OK).json(result);
 };
 
 module.exports = {
