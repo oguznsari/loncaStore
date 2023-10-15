@@ -1,4 +1,5 @@
 import { BadgeCheck, Fingerprint, Package, Store } from "lucide-react";
+import StatsCard from "./stat-card";
 
 export default function AllTimeStats({ data }) {
   if (!data) {
@@ -8,8 +9,8 @@ export default function AllTimeStats({ data }) {
   const { vendorId, vendorName, orderStatus, totalCount, products } = data;
 
   return (
-    <div className="text-gray-600 dark:text-gray-300 text-center mt-5 mb-2">
-      <h2 className="text-lg font-semibold border-b text-center mt-5 border-t">
+    <div className="text-gray-600 dark:text-gray-300 text-center mt-5 mb-2 mx-40">
+      <h2 className="text-2xl font-semibold border-b text-center mt-5 border-t">
         All-time product statistics
       </h2>
       <div className="my-4">
@@ -44,23 +45,7 @@ export default function AllTimeStats({ data }) {
         </div>
       </div>
 
-      {products && products.length > 0 && (
-        <div className="border border-gray-500 p-4 bg-white dark:bg-gray-800">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {products.map((product) => (
-              <div
-                key={product.id}
-                className="p-2 border border-gray-300 rounded-lg bg-white dark:bg-gray-700"
-              >
-                <div className="text-lg font-semibold">{product.name}</div>
-                <div className="bg-blue-400 text-white p-2 rounded-md">
-                  Count: {product.count}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      <StatsCard products={products} />
     </div>
   );
 }

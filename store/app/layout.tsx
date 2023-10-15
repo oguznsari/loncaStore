@@ -22,9 +22,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <main className="flex min-h-screen flex-col items-center justify-between p-24">
+          <main className="flex min-h-screen flex-col items-center justify-between p-20">
             <Navbar />
-            {children}
+            <div className="flex flex-col items-center justify-center flex-grow">
+              {children}
+            </div>
           </main>
         </ThemeProvider>
       </body>

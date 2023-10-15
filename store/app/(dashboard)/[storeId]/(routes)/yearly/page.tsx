@@ -1,4 +1,5 @@
 import AllTimeStats from "@/components/all-time-stats";
+import StatsCard from "@/components/stat-card";
 import { Overview } from "@/components/yearly-overview";
 import { BadgeCheck, CalendarCheck } from "lucide-react";
 
@@ -55,6 +56,21 @@ export default async function YearlySummary({
     "Dec",
   ];
 
+  const longMonthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
   for (let i = 1; i < 13; i++) {
     const monthData = yearlyData.months[i];
     chartData.push({
@@ -66,11 +82,23 @@ export default async function YearlySummary({
     });
   }
 
-  console.log({ osari: chartData });
+  let productSummary = {};
+  for (let mon in yearlyData.months) {
+    if (yearlyData.months.hasOwnProperty(mon)) {
+      const monthData = yearlyData.months[mon]["products"];
+      productSummary[mon] = [];
+      for (let i = 0; i < monthData.length; i++) {
+        productSummary[mon].push({
+          name: monthData[i].name,
+          count: monthData[i].qty,
+        });
+      }
+    }
+  }
 
   return (
-    <>
-      <h2 className="text-lg font-semibold border-b text-center mt-5 border-t">
+    <div className="text-gray-600 dark:text-gray-300 text-center mt-5 mb-2 mx-40">
+      <h2 className="text-2xl font-semibold border-b text-center mt-5 border-t">
         Yearly product statistics
       </h2>
       <div className="my-4">
@@ -91,6 +119,18 @@ export default async function YearlySummary({
       </div>
 
       <Overview data={chartData} />
-    </>
+      <h1 className="text-3xl text-center py-2 my-2 bg-gray-100 dark:bg-gray-700 border border-gray-400 p-4 mt-20 border-top dark:border-gray-800 mx-40">
+        Per month product purchase summary
+      </h1>
+      {productSummary &&
+        Object.keys(productSummary).map((month) => (
+          <div key={month} className="mx-40 my-2">
+            <h1 className="text-xl text-center py-2 my-2">
+              {longMonthNames[month - 1]}
+            </h1>
+            <StatsCard products={productSummary[month]} />
+          </div>
+        ))}
+    </div>
   );
 }
