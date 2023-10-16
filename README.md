@@ -1,3 +1,5 @@
+# [Please see the Project video](https://www.youtube.com/watch?v=UsqqhLdQrUM)
+
 # How to run
 
 1. Populate given JSON data in the Mongo Database
