@@ -23,3 +23,47 @@ Useful insights from data (order table)
   }
 }
 ```
+
+API collection can be imported by postman File > import and import the file
+
+```bash
+  store/Lonca.postman_collection.json
+```
+
+# How to run
+
+1. Go to api and create .env file give your mongodb atlas URI
+
+```bash
+cd api
+npm i # to install packages
+touch .env
+# add 2 lines
+MONGO_URI=mongodb+srv://AAAA:AAAA@AAAA/LONCA?retryWrites=true&w=majority
+PORT=3001
+
+# cd to utils directory and run the script to populate mock data on your db
+cd utils
+node populate.js
+# confirm you see the below log indicating you've successfully populated
+"Data populated successfully."
+# I've also logged the count of data per each item, so that you can compare the collection count in your mongo db instance and make sure you've the data
+# go back the root folder for next step
+```
+
+2. start the api server
+
+```bash
+cd api
+npm run dev
+# confirm you see the below log
+"Server is running on port 3001..."
+```
+
+3. start the nextJS Ui
+
+```bash
+cd store
+npm i # install packages
+npm run dev
+```
