@@ -1,0 +1,274 @@
+{
+	"info": {
+		"_postman_id": "48814d76-aa21-4b70-91b9-069586f3df8b",
+		"name": "Lonca",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12274928"
+	},
+	"item": [
+		{
+			"name": "Orders",
+			"item": [
+				{
+					"name": "ORDER - Get all orders",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/api/v1/orders",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"v1",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ORDER - Get single order",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/api/v1/orders/61b41922eb0f315e259f0149",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"v1",
+								"orders",
+								"61b41922eb0f315e259f0149"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "PRODUCT - Get single product",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/api/v1/products/61aac24d433e0592d8baf4d8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"v1",
+								"products",
+								"61aac24d433e0592d8baf4d8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PRODUCT - Get single product Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/api/v1/products/63a1dd9fff8f3a3ce07ef1c5/details",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"v1",
+								"products",
+								"63a1dd9fff8f3a3ce07ef1c5",
+								"details"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Vendors",
+			"item": [
+				{
+					"name": "VENDOR - Get single vendor",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/api/v1/vendors/61cc167a57a0b1781e9a0ff9",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"v1",
+								"vendors",
+								"61cc167a57a0b1781e9a0ff9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "VENDOR - Get products of vendor by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/api/v1/vendors/61cc167a57a0b1781e9a0ff9/products",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"v1",
+								"vendors",
+								"61cc167a57a0b1781e9a0ff9",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "VENDOR - Get all vendors",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/api/v1/vendors",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"v1",
+								"vendors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "VENDOR - Get all yearlySummary",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/api/v1/vendors/61cc167a57a0b1781e9a0ff9/yearSummary/2022",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"v1",
+								"vendors",
+								"61cc167a57a0b1781e9a0ff9",
+								"yearSummary",
+								"2022"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "VENDOR - Get all yearlySummary with order status",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"order_status\": \"Confirmed\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/v1/vendors/61cc167a57a0b1781e9a0ff9/yearSummary/2022",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"v1",
+								"vendors",
+								"61cc167a57a0b1781e9a0ff9",
+								"yearSummary",
+								"2022"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "VENDOR - Get allTimeProductStats",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"order_status\": \"Confirmed\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/api/v1/vendors/61cc167a57a0b1781e9a0ff9/allTimeStats",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"api",
+								"v1",
+								"vendors",
+								"61cc167a57a0b1781e9a0ff9",
+								"allTimeStats"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
