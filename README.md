@@ -39,7 +39,7 @@ npm run dev
 ### API collection can be imported by postman File > import and import the file
 
 ```bash
-  store/Lonca.postman_collection.json
+  api/Lonca.postman_collection.json
 ```
 
 ### Useful insights from data (order table)
