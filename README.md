@@ -21,6 +21,8 @@
 # go back the root folder for next step
 ```
 
+<img src="api/mockData/lonca.png" width="400" alt="Schema">
+
 2. start the api server
 
 ```bash
